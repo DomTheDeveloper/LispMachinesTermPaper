@@ -1,3 +1,11 @@
+#### Special Exceptions for .gitignore
+## Howto by IEEE
+IEEEtran_HOWTO.pdf
+## Unaltered rubric from instructor
+rubric.txt
+
+
+#### Default TeX .gitignore
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

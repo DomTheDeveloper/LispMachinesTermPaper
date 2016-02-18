@@ -1,0 +1,3 @@
+Term paper
+
+Students will do an independent research in a small group (e.g., team of two) and write a term paper, which may cover any topic under the broad area of computer organization and architecture. It needs not to be a topic discussed in the class. The goal of the term paper is to conduct an in-depth study of a particular topic and present the topic in a cohesive manner. A report and a presentation will be due at the end of the semester. The paper should be roughly five pages in length when list of references is excluded. Format of the paper: two-column, 1/2” margin, single spaced lines, 10 point times roman font. You are encouraged to start thinking of topics of interest early. Be ambitious!
