@@ -1,0 +1,12 @@
+Tentative outline based on things I have read:
+
+Abstract: Lisp Machines were purposed to run Lisp, etc.
+Introduction: Explain the history of Lisp and Lisp Machines
+Body:
+- Explain basics of Lisp.
+Machine types (may want to rearrange/change):
+- Class M machines.
+- Class S macines.
+- Class P machines.
+- Applications (AI and single-person workstations)
+- Why Lisp machines were largely unsuccessful.
