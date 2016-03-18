@@ -1,12 +1,11 @@
 Tentative outline based on things I have read:
 
-Abstract: Lisp Machines were purposed to run Lisp, etc.
-Introduction: Explain the history of Lisp and Lisp Machines
+Abstract: Lisp machines were purposed to run Lisp, etc. [needs reviewing]
+Introduction: Explain the history of Lisp and Lisp machines [needs reviewing]
 Body:
-- Explain basics of Lisp.
-Machine types (may want to rearrange/change):
-- Class M machines.
-- Class S macines.
-- Class P machines.
+- Explain basics of some Lisp dialect (Common Lisp/Scheme).
+- Discuss different ways in which Lisp machines were
+  constructed such that they could run Lisp more efficiently.
+  This should be the bulk of the paper.
 - Applications (AI and single-person workstations)
-- Why Lisp machines were largely unsuccessful.
+- Legacy of Lisp machines.
