@@ -4,8 +4,7 @@ Abstract: Lisp machines were purposed to run Lisp, etc. [needs reviewing]
 Introduction: Explain the history of Lisp and Lisp machines [needs reviewing]
 Body:
 - Explain basics of some Lisp dialect (Common Lisp/Scheme).
-- Discuss different ways in which Lisp machines were
-  constructed such that they could run Lisp more efficiently.
-  This should be the bulk of the paper.
+- Overview of ways in which Lisp machines targeted Lisp.
+- Examples of different Lisp machine architectures from primary sources.
 - Applications (AI and single-person workstations)
 - Legacy of Lisp machines.
