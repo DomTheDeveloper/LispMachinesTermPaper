@@ -101,8 +101,8 @@
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of IEEE. Loading the cite package will
 % result in citation numbers being automatically sorted and properly
-% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
-% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% "compressed/ranged". e.g., [1], [9], [2], [7], [SS], [PT] without using
+% cite.sty will become [1], [2], [SS]--[7], [9] using cite.sty. cite.sty's
 % \cite will automatically add leading space, if needed. Use cite.sty's
 % noadjust option (cite.sty V3.8 and later) if you want to turn this off.
 % cite.sty is already installed on most LaTeX systems. Be sure and use
@@ -387,7 +387,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Lisp machines and the analysis of their high-level language computer architecture}
+\title{Lisp Machines and the Analysis of Their High-Level Language Computer Architecture}
 %
 %
 % author names and IEEE memberships
@@ -523,35 +523,55 @@ These machines were often seen as valuable for not just their ability to run Lis
 \section{The Basics of Lisp}
 
 \section{Identifiable Problems in the Execution of Lisp Code}
-In A 1987 survey of Lisp machines, Andrew R. Pleszkun and Matthew J. Thazhuthaveetil concluded that there were four main problems that engineers had to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance [6].
+In A 1987 survey of Lisp machines, Andrew Pleszkun and Matthew Thazhuthaveetil concluded that there were four main problems engineers needed to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance. There were multiple solutions to some of these problems, at at the time of their survey, methods of improving these aspects in Lisp machines were seen as valuable topics for further research [PT].
+
+\subsection{Problems in Execution}
+Function calling is a significant feature in Lisp due to its recursive nature, and in general is expensive due to the operations that must be performed for an invocation or return. In particular is the problem of dealing with variables, which must be accessed in a way that costs a minimal amount of time, due to the high frequency with with functions are accessed. Another key component is the versatility of functions in Lisp, which in some cases can contain different types of arguments, a variable number of arguments, and can sometimes be passed as arguments themselves [PT].
+
+Integral to the problem of function calling is that of maintaining the environment associated with each function. The current environment, which contains the set of variables within the function and their associated values, is changed every time a function is called. As a result, the environment that exists outside the body of the function must be stored during the function's execution, which is not necessarily difficult, but must be implemented in such a way that it is fast. A more complicated problem is that of accessing variables outside of the function, which are contained in other environments. This is called the funarg problem, which presented difficulties to McCarthy and his team even before it became a focus for Lisp machine engineers [1, PT].
+
+Lists are the primary data structure of Lisp, and as such a significant portion of execution time in a Lisp program is spent traversing these lists. Therefore, reducing the time require to traverse a list is seen as an important goal in creating a machine optimized to run Lisp. A critical component in achieving this is efficiently determining how data should be handled, which is checked at runtime due to Lisp's lack of typed variables. This is often done through tagging the type of data referred to in the list, typically through hardware solutions [PT].
+
+Coupled tightly with the management of lists is the heap, which contains all of the referenced Lisps in a Lisp program and holds them in memory [PT]. Garbage collection is one solution that Lisp proposes to ensure proper memory management without burdening the programmer, but efficient garbage collection is challenging, and presents a difficulty in both hardware and software implementations.
+
+\subsection{Solutions in Lisp Machines}
+In their survey, Pleszkun and Thazheuthaveetil found three different general approaches to Lisp machine design, which in turn affected how these problems were solved. The first class of machines contain processors that were not altered on a hardware level, but in the microcode. The second class contains multiple processors that each have specific functionality to assist in executing Lisp code. The third class contain multiple identical processors and function by executing multiple functions in a program concurrently. They call these distinctions Class M, S, and P machines, respectively [PT].
+
+In solving the problem of evaluating the arguments of functions the Class M and Class S machines will typically allow for code to be run in different formats, the fastest being a compiled code that tags the arguments types and largely bypasses the evaluation process, and the slowest being interpreted code that runs them directly. The Class P machines attempt to solve this through passing each argument to a different processor for evaluation, and in the case one one machine, even allowing incomplete results to be sent to encourage further parallel execution [PT].
+
+Two primary implementations of the environment are called \textit{deep binding} and \textit{shallow binding}, which serve as variations on a linked list of name-value pairs of functions and referencing contexts of variable associations. Deep binding makes use of a simple linked list of name-value pairs that is searched every time the function is called, and in the worst case the entire list must be traversed. Shallow binding uses a table that holds the name-value pairs. While this allows for faster function calling, the values in any variables that are overwritten have to be stored elsewhere while the function executes.
+
+While lists function quite well as a way of mathematically representing data, they can be computationally inefficient. Therefore, some Lisp machines have represented them in more compact forms, which the authors classify as \textit{vector-coded} and \textit{structure-coded}. Vector-coded representations assume that a list is linear, or that none of its elements are themselves lists. Making this the default case speeds up the evaluation of list elements, with elements that point to other objects treated as exceptions that will evaluate slower. Structure-coded representations attach tags to each list cell that identifies its place in the list. This information allows the list to be traversed quickly, and allows for fast access to individual cells. The implementations of each of these representations vary from machine to machine, as there are multiple implementations of each [PT]. \underline{Add more detail if desired}
+
+Lisp delegates the management of the heap to the system rather than the programmer, which necessitates the need for an algorithmic method in which heap data can be allocated when needed and deallocated when it is no longer wanted. The limited amount of memory available to systems has made the reclamation of used space the most researched aspect of heap maintenance, which is commonly referred to as \textit{garbage collection}. Garbage collection is a two-stage process: the system must first identify memory locations that should be reclaimed, and then must simply identify them as such. Two common methods of garbage collection were present in most Lisp systems: \textit{reference counting} and \textit{marking}. Reference counting consists of keeping a list of the number of references for each object in the code and marking it as free space once that number goes to zero, but suffers from numerous drawbacks, such as the memory requirement of keeping such a list. Marking is more common in Lisp machines, and consists of marking each object with a one-bit field to indicate whether it should be removed. Once all available heap space has been allocated, any the memory cells containing objects marked for reclamation are overwritten.
 
 \section{A Proposed Lisp-Based Processor by Steele and Sussman}
-Steele and Sussman, creators of the popular Lisp dialect Scheme, proposed in March 1979 a processor that they suggested would allow for the efficient execution of Lisp programs under a dialect of Lisp they had created [5]. While it is uncertain whether their ideas were directly implemented in an actual Lisp machine, they provide solutions to the environment maintenance and efficient list representation problems proposed by Pleszkun and Thazhuthaveetil, providing a great degree of detail in describing their implementation.
+In March 1979, Steele and Sussman, researchers at the MIT AI Lab in the 1970s, outlined and discussed a processor that they suggested would allow for the efficient execution of Lisp programs under a dialect of Lisp they had created [SS]. While it is uncertain whether their ideas were directly implemented in an actual Lisp machine, they provide solutions to the environment maintenance and efficient list representation problems proposed by Pleszkun and Thazhuthaveetil, providing a great degree of detail in describing their implementation.
 
-Steele and Sussman start their paper by introducing the basics of the Lisp dialect they want their processor to run. The representation of data structures in Lisp and how the program is traversed are of particular concern, as Lisp's code is itself a data structure. Therefore, their processor is built specifically for traversing the Lisp data structure in an efficient manner. To achieve this, they introduce a Lisp interpreter which functions recursively, operating on a small set of registers to hold pointers to a list memory system which holds the stack for the program's state information between procedure invocations. The evaluation component of the interpreter uses five global variables that simulate registers in a normal machine to hold different components of the program's state. They describe this system as a state machine implementation where the program moves between states as procedures are invoked [5].
+The proposed processor would run a simplified version of Lisp, called Scheme, that is a minimal Lisp dialect without many of the features of other dialects, such as Common Lisp. The representation of data structures in Lisp and how the program is traversed are of particular concern, as Lisp's code is itself a data structure. Therefore, their processor is built specifically for traversing the Lisp data structure in an efficient manner. To achieve this, they wrote a Lisp interpreter which functions recursively, operating on a small set of registers to hold pointers to a list memory system which holds the stack for the program's state information between procedure invocations. The evaluation component of the interpreter uses five global variables that simulate registers in a normal machine to hold different components of the program's state. They describe this system as a state machine implementation where the program moves between states as procedures are invoked [SS].
 
-To reduce evaluation times for atoms and lookup times for variables, the representation of list data is altered slightly so that each pointer contains a field that specifies how the data should be handled. This happens at compilation time, such that the code does not be modified to include these types, and the compiler will appropriately tag the data [5]. Refer to figure 1 for a graphical representation of this format generated from a small code sample.
+To reduce evaluation times for atoms and lookup times for variables, the representation of list data is altered slightly so that each pointer contains a field that specifies how the data should be handled. This happens at compilation time, such that the code does not be modified to include these types, and the compiler will appropriately tag the data [SS]. Refer to figure 1 for a graphical representation of this format generated from a small code sample.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=3.5in]{SS_Data_Representation}
-\caption{Example of the tagged data representation used in the Steele an Sussman processor, intended to improve evaluation and lookup efficiency [5].}
+\caption{Example of the tagged data representation used in the Steele an Sussman processor, intended to improve evaluation and lookup efficiency [SS].}
 \label{Data representation}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=3.5in]{SS_Processor_Diagram}
-\caption{An overview diagram of the processor design proposed by Steele and Sussman. This design was fabricated to test the author's proposed system, but was likely never implemented commercially [5].}
+\caption{An overview diagram of the processor design proposed by Steele and Sussman. This design was fabricated to test the author's proposed system, but was likely never implemented commercially [SS].}
 \label{Data representation}
 \end{figure}
 
 
-The authors then propose that by combining these two ideas, an efficient interpreter can be designed directly into the hardware. The hardware itself is only concerned with the traversing of the Lisp structure, and so all data is accessed through pointers to memory, which are stored in the processor's registers. Commercially-available memory was only available in a form that stored linearly-indexed vectors rather than linked-lists at the time, so a storage manager was needed to interface between the memory hardware and the processor to ensure the processor could properly utilize the memory. The registers in the proposed processor would hold an 8-bit address and 3-bit type value for each pointer [5].
+In their paper, the authors propose that by combining these two ideas, an efficient interpreter can be designed directly into the hardware. The hardware itself is only concerned with the traversing of the Lisp structure, and so all data is accessed through pointers to memory, which are stored in the processor's registers. Commercially-available memory was only available in a form that stored linearly-indexed vectors rather than linked-lists at the time, so a storage manager was needed to interface between the memory hardware and the processor to ensure the processor could properly utilize the memory. The registers in the proposed processor would hold an 8-bit address and 3-bit type value for each pointer [SS].
 
-A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right [5]. A diagram representing the layout of their processor is displayed in figure 2.
+A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right [SS]. A diagram representing the layout of their processor is displayed in figure 2.
 
-As noted by Steele and Sussman, their processor does not include a meaningful arithmetic logic unit (ALU), and so can not be independent in a system that needs to process real data. However, it contains basic structures for logic and can perform incrementation, and so contains the necessary components to run any Lisp program in the described style, due to the simple nature of their proposed Lisp dialect. It is suggested that any actual calculations be done with modules closer to the memory, which most likely contain processors with more sophisticated ALUs [5]. As such, Lisp machines which implemented designs similar to this would likely take the form of a multi-processor system.
+As noted by Steele and Sussman, their processor does not include a meaningful arithmetic logic unit (ALU), and so can not be independent in a system that needs to process real data. However, it contains basic structures for logic and can perform incrementation, and so contains the necessary components to run any Lisp program in the described style, due to the simple nature of their proposed Lisp dialect. It is suggested that any actual calculations be done with modules closer to the memory, which most likely contain processors with more sophisticated ALUs [SS]. As such, Lisp machines which implemented designs similar to this would likely take the form of a multi-processor system.
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
@@ -652,15 +672,15 @@ As noted by Steele and Sussman, their processor does not include a meaningful ar
 %
 
 
-\appendices
-\section{Proof of the First Zonklar Equation}
-Some text for the appendix.
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Some text for the appendix.
 
 % use section* for acknowledgement
-\section*{Acknowledgment}
+%\section*{Acknowledgment}
 
 
-The authors would like to thank...
+%The authors would like to thank...
 
 
 % Can use something like this to put references on a page
@@ -697,15 +717,15 @@ The authors would like to thank...
 %[2] Recursive Function... by McCarthy (PDF)
 %[3]http://www.andromeda.com/people/ddyer/lisp/
 %[4]Lisp Machines: Noble Experiment... by P. T. Withington (PDF)
-%[5] Design of Lisp-Based Processors by Steele and Sussman (PDF)
-%[6] The Architectures of Lisp Machines by Plesz & Thaz (PDF)
-\begin{thebibliography}{1}
+%[SS] Design of Lisp-Based Processors by Steele and Sussman (PDF)
+%[PT] The Architectures of Lisp Machines by Plesz & Thaz (PDF)
+%\begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+ % 0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
 
-\end{thebibliography}
+%\end{thebibliography}
 
 % biography section
 % 
