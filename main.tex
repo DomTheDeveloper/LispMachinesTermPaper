@@ -534,9 +534,11 @@ Pairs are useful when building a sequence in lisp. A sequence is defined as an o
 \begin{figure}
 	\centering
 	\includegraphics[width=3.5in]{Chain}
-	\caption{Box-and-pointer diagram representing an example of a sequence chain. This particular chain contains the sequence of the elements d, o, m}
+	\caption{Box-and-pointer diagram representing an example of a sequence chain. This particular chain contains the sequence of the elements d, o, m. The empty box represents nil.}
 	\label{Data representation}
 \end{figure}
+
+(cons d (cons o (cons m nil)))
 
 \section{Identifiable Problems in the Execution of Lisp Code}
 In A 1987 survey of Lisp machines, Andrew Pleszkun and Matthew Thazhuthaveetil concluded that there were four main problems engineers needed to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance. There were multiple solutions to some of these problems, at at the time of their survey, methods of improving these aspects in Lisp machines were seen as valuable topics for further research \cite{pt}.
