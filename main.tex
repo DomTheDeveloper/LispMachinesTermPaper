@@ -525,6 +525,18 @@ Lisp machines were some of the first single-user workstations, which at the time
 These machines were often seen as valuable for not just their ability to run Lisp, but for the advanced features they offered in terms of graphical user interfaces (GUIs) and programmability due to the flexibility that Lisp afforded programmers. Despite their advances in usability, they were often behind in terms of hardware due to their niche audience, they sold to a much smaller market than general-purpose machines, which quickly raced past Lisp machines in terms of hardware capability \cite{withington}. Eventually general-purpose computers became faster at running Lisp despite the hardware incompatibilities, and in combination with the slow development of AI in the early 1990s, most Lisp Machine vendors either left the market or went bankrupt.
 
 \section{The Basics of Lisp}
+Lisp is a language that was built in mind for data abstraction. Data abstraction can isolate a compound data object and its usage from the fabrics of how primitive data objects are constructed. The reason that data abstraction is necessary is to provide foundation to a program in such a way that tasks can be performed without having information about the data beforehand. This is different from a concrete representation of data, which can be defined independently from the program which will handle said concrete data.
+
+In Lisp, car and cdr are primitive operations that can be performed on lists and other data objects. The car operation extracts the first element from the list, and the cdr operation extracts the rest of the list. For example, consider a list with three elements '(d o m); the following expression involving the car and cdr operations on said list evaluate to the following: (car  '(d o m)) evaluates to d, and (cdr '(d o m)) evaluates to '(o m). If given a pair (cons D d) and operate car and cdr on the pair, however, the evaluation would return to D and d, respectively.
+
+Pairs are useful when building a sequence in lisp. A sequence is defined as an ordered collection of data objects. Sequences are one of the fundamental building blocks to perform recursive and other useful procedures in Lisp. As shown in the figure below, the sequence d, o, m is represented as a chain of pairs.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3.5in]{Chain}
+	\caption{Box-and-pointer diagram representing an example of a sequence chain. This particular chain contains the sequence of the elements d, o, m}
+	\label{Data representation}
+\end{figure}
 
 \section{Identifiable Problems in the Execution of Lisp Code}
 In A 1987 survey of Lisp machines, Andrew Pleszkun and Matthew Thazhuthaveetil concluded that there were four main problems engineers needed to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance. There were multiple solutions to some of these problems, at at the time of their survey, methods of improving these aspects in Lisp machines were seen as valuable topics for further research \cite{pt}.
