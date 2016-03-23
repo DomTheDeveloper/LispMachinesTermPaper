@@ -527,11 +527,11 @@ These machines were often seen as valuable for not just their ability to run Lis
 \section{The Basics of Lisp}
 
 \subsection{Lists and functions}
-Lisp programs is constructed using functions that invoke each other. After the nest of functions are evaluated, it is typical of Lisp programs to evaluate to one final value.
+Lisp programs are constructed using functions that invoke each other. After the nest of functions are evaluated, it is typical of Lisp programs to evaluate to one final value.
 
-All expression in Lisps are written in forms. One of the most common forms includes an application of function. For example, the function call in common mathematics \texttt{g(x)} is represented in lisp as \texttt{(g x)}. In this example, \texttt{g} is the name of the function and the argument(s) follow. Furthermore, \texttt{x} is the only argument in this example.
+All expressions in Lisps are written in forms. One of the most common forms includes an application of functions. For example, the function call in common mathematics \texttt{g(x)} is represented in lisp as \texttt{(g x)}. In this example, \texttt{g} is the name of the function and the argument(s) follow, with \texttt{x} being the only argument in this example.
 
-Numbers and some other basic expressions such as booleans qualify as /self-evaluating forms/, which means that those expressions evaluate to the same values.  
+Numbers and some other basic expressions such as booleans qualify as \textit{self-evaluating forms}, meaning that those expressions evaluate to the same values.  
 
 \begin{figure}
 	\centering
@@ -540,22 +540,20 @@ Numbers and some other basic expressions such as booleans qualify as /self-evalu
 	\label{Data representation}
 \end{figure}
 
-Lisp is a language that was built in mind for data abstraction. Data abstraction can isolate a compound data object and its usage from the fabrics of how primitive data objects are constructed. The reason that data abstraction is necessary is to provide foundation to a program in such a way that tasks can be performed without having information about the data beforehand. This is different from a concrete representation of data, which can be defined independently from the program which will handle said concrete data.
+Lisp was built to support complete abstraction of data. Data abstraction can isolate a compound data object and its usage from the fabrics of how primitive data objects are constructed. The reason that data abstraction is necessary is to provide foundation to a program in such a way that tasks can be performed without having information about the data beforehand. This is different from a concrete representation of data, which can be defined independently from the program which will handle said data.
 
-In Lisp, car and cdr are primitive operations that can be performed on lists and other data objects. They are used to extract from lists and manipulate them.  The car operation extracts the first element from the list, and the cdr operation extracts the rest of the list. For example, consider a list with three elements: \\\\\texttt{'(d o m)}\\\\ The following expression involving the car and cdr operations on said list evaluate to the following: \\\\\texttt{(car  '(d o m))}\\\\ evaluates to \texttt{d}, and \\\\\texttt{(cdr '(d o m))}\\\\ evaluates to \texttt{'(o m)}.\\\\ These are classified as procedures operated on list objects. However, this is not the same case as pairs. When given the following pair: \\\\\texttt{(cons D d)}\\\\ and operate \texttt{car} and \texttt{cdr} on the pair, however, the evaluation would return to \texttt{D} and \texttt{d}, respectively.
+\texttt{car} and \texttt{cdr} are primitive operations that can be performed on lists and other data objects. They are used to both extract from lists and manipulate them.  The car operation extracts the first element from the list, and the cdr operation extracts the rest of the list. For example, consider a list with three elements: \\\\\texttt{'(d o m)}\\\\ The following expression involving the car and cdr operations on said list evaluate to the following: \\\\\texttt{(car  '(d o m))}\\\\ evaluates to \texttt{d}, and \\\\\texttt{(cdr '(d o m))}\\\\ evaluates to \texttt{'(o m)}.\\\\ These are classified as procedures operated on list objects. However, this is not the same case as pairs. When given the following pair: \\\\\texttt{(cons D d)}\\\\ and operating \texttt{car} and \texttt{cdr} on the pair, the evaluation will return to \texttt{D} and \texttt{d}, respectively.
 
-Pairs are useful when building a sequence in lisp. A sequence is defined as an ordered collection of data objects. Sequences are one of the fundamental building blocks to perform recursive and other useful procedures in Lisp. As shown in the Figure 1, the sequence d, o, m is represented as a chain of pairs.\\
-
-
+Pairs are useful when building a sequence in Lisp. A sequence is defined as an ordered collection of data objects. Sequences are one of the fundamental building blocks to perform recursive and other useful procedures. As shown in the Figure 1, the sequence d, o, m is represented as a chain of pairs.\\
 
 \texttt{(cons d (cons o (cons m nil)))}\\
 
-There are also procedures that can perform operations on lists. For example, the procedure *reverse* take a list as an argument and returns a list with the same elements, but in reverse order. In this example, the s-value \texttt{(reverse '(d o m))} evaluates to \texttt{'(m o d)}.
+There are also procedures that can perform operations on lists. For example, the procedure \texttt{reverse} takes a list as an argument and returns a list with the same elements, but in reverse order. In this example, the s-value \texttt{(reverse '(d o m))} evaluates to \texttt{'(m o d)}.
 
 
 \subsection{Environments}
-Environments in lisp is a specific kind of datatype that allows one to define a set of variables that are bound to specific values. The actual datatype for the environment can be implemented in a variety of ways. Using a data-centric approach, we can introduce the environment datatype as follows:\\\\
-\texttt{Env :=}\\\texttt{(empty-env) | (extend-env var val Env)}\\\\Each datatype includes constructors and observers, which Lisp enables the ability to define and construct. An environment is comparable with a dictionary, in the fact that, when using an extractor, the function must search for the variable (word) and, once found, will then be able to extract the value (definition). Environments in Lisp share some of the fundamental properties as the logic units in Lisp machines do.
+Environments are a specific kind of datatype that allows one to define a set of variables that are bound to specific values. The actual datatype for the environment can be implemented in a variety of ways. Using a data-centric approach, we can introduce the environment datatype as follows:\\\\
+\texttt{Env :=}\\\texttt{(empty-env) | (extend-env var val Env)}\\\\Each datatype includes constructors and observers, which Lisp enables the programmer to define and construct. An environment is comparable with a dictionary, in the fact that, when using an extractor, the function must search for the variable (word) and, once found, will then be able to extract the value (definition). In Lisp, environments share some of the fundamental properties as the logic units in Lisp machines do.
 
 \begin{figure}[!t]
 	\centering
@@ -565,20 +563,15 @@ Environments in lisp is a specific kind of datatype that allows one to define a 
 \end{figure}
 
 \subsection{Recursion}
-Lisp conventional programming emphasizes on recursion for its uses in environments and lists. Recursive functions in lisp are functions that refer to themselves in the function-body. Typically, the recursive call argument differs from each step of when the function recurs. A classic example in Lisp is the factorial function. As shown below, the factorial function makes use of a decreasing integer with a base case that enables the program to terminate. \\
-
-
+Lisp's conventional programming methodology places emphasis on recursion for its uses in environments and lists. Recursive functions are generally defined as functions that refer to themselves in the function-body, with the recursive call argument differing between each step in which the function recurs. A classic example in any programming language is the factorial function. As shown below, the factorial function makes use of a decreasing integer with a base case that enables the program to terminate. \\
 
 \texttt{(defun factorial (n)}\\\texttt{
 	(if (= n 0)
 	1
 	(* n (factorial (- n 1)))))
-}\\\\In this example, the program checks if the argument \texttt{n} is equal to 0 (the base case). If so, the function evaluates to 1 and terminates; otherwise, the function will multiply the argument by the factorial with \texttt{n-1} as the argument instead. This creates a chain similar to Fig. 1, and evaluates to the factorial of \texttt{n}.
+}\\\\In this example, the program checks if the argument \texttt{n} is equal to 0 (the base case). If so, the function evaluates to 1 and terminates; otherwise, the function will multiply the argument by the factorial with \texttt{n-1} as the argument instead. This creates a chain similar to Figure 2, and evaluates to the factorial of \texttt{n}.
 
-
-
-
-A way that recursion is commonly used in Lisp includes list-based manipulation is shown below. In this classic example, which shows another design pattern that is possible and common in this language, is the \texttt{list-of-all?} function, which has two arguments, a /predicate/ and a /list/, and evaluates to the value \texttt{\#t} (true) or \texttt{\#f} (false), based on whether or not the entire list contains elements that satisfy the predicate function requirements. The example below demonstrates how a recursive function manipulates a list until the list empties.\\
+A way in which recursion is commonly used in Lisp that includes list-based manipulation is shown below. In this example, which shows another design pattern that is possible and common in this language, is the \texttt{list-of-all?} function, which has two arguments, a \textit{predicate} and a \textit{list}, and evaluates to the value \texttt{\#t} (true) or \texttt{\#f} (false), based on whether or not the entire list contains elements that satisfy the predicate function requirements. The example below demonstrates how a recursive function manipulates a list until the list empties.\\
 
 \texttt{
 	(define (list-of-all? predicate lst)
@@ -587,8 +580,6 @@ A way that recursion is commonly used in Lisp includes list-based manipulation i
 				(and (predicate (car lst))
 					 (list-of-all? predicate (cdr lst)))))
 }\\\\This example evaluates to \texttt{\#t} and terminates given an empty list, which is the base case. Otherwise, it will extract the first element of the list and check the predicate against it. If the check evaluates to \texttt{\#f}, then the function will evaluate completely to \texttt{\#f}, and not check the rest of the list. However, if \texttt{\#t}, the function will check the rest of the list, discluding the first element. This function will therefore terminate when an element that does not match the predicate is found, or when every element of the list has been checked on by the predicate.
-
-Recursion, which is a main focus for the language of Lisp, has implications of its own. Being a major part of the language, these language features come with their own problems, namely when it comes to executing functions and recursive calls on large lists. In the next section, these problems will be identified clearly and addressed in the subsequent section.
 
 \section{Identifiable Problems in the Execution of Lisp Code}
 In A 1987 survey of Lisp machines, Andrew Pleszkun and Matthew Thazhuthaveetil concluded that there were four main problems engineers needed to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance. There were multiple solutions to some of these problems, at at the time of their survey, methods of improving these aspects in Lisp machines were seen as valuable topics for further research \cite{pt}.
@@ -620,8 +611,7 @@ In March 1979, Steele and Sussman, researchers at the MIT AI Lab in the 1970s, o
 
 The proposed processor would run a simplified version of Lisp, called Scheme, that is a minimal Lisp dialect without many of the features of other dialects, such as Common Lisp. The representation of data structures in Lisp and how the program is traversed are of particular concern, as Lisp's code is itself a data structure. Therefore, their processor is built specifically for traversing the Lisp data structure in an efficient manner. To achieve this, they wrote a Lisp interpreter which functions recursively, operating on a small set of registers to hold pointers to a list memory system which holds the stack for the program's state information between procedure invocations. The evaluation component of the interpreter uses five global variables that simulate registers in a normal machine to hold different components of the program's state. They describe this system as a state machine implementation where the program moves between states as procedures are invoked \cite{ss}.
 
-To reduce evaluation times for atoms and lookup times for variables, the representation of list data is altered slightly so that each pointer contains a field that specifies how the data should be handled. This happens at compilation time, such that the code does not be modified to include these types, and the compiler will appropriately tag the data \cite{ss}. Refer to figure 1 for a graphical representation of this format generated from a small code sample.
-
+To reduce evaluation times for atoms and lookup times for variables, the representation of list data is altered slightly so that each pointer contains a field that specifies how the data should be handled. This happens at compilation time, such that the code does not be modified to include these types, and the compiler will appropriately tag the data \cite{ss}. Refer to Figure 1 for a graphical representation of this format generated from a small code sample.
 
 \begin{figure}[!t]
 	\centering
@@ -640,7 +630,7 @@ To reduce evaluation times for atoms and lookup times for variables, the represe
 
 In their paper, the authors propose that by combining these two ideas, an efficient interpreter can be designed directly into the hardware. The hardware itself is only concerned with the traversing of the Lisp structure, and so all data is accessed through pointers to memory, which are stored in the processor's registers. Commercially-available memory was only available in a form that stored linearly-indexed vectors rather than linked-lists at the time, so a storage manager was needed to interface between the memory hardware and the processor to ensure the processor could properly utilize the memory. The registers in the proposed processor would hold an 8-bit address and 3-bit type value for each pointer \cite{ss}.
 
-A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right \cite{ss}. A diagram representing the layout of their processor is displayed in figure 2.
+A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right \cite{ss}. A diagram representing the layout of their processor is displayed in Figure 4.
 
 As noted by Steele and Sussman, their processor does not include a meaningful arithmetic logic unit (ALU), and so can not be independent in a system that needs to process real data. However, it contains basic structures for logic and can perform incrementation, and so contains the necessary components to run any Lisp program in the described style, due to the simple nature of their proposed Lisp dialect. It is suggested that any actual calculations be done with modules closer to the memory, which most likely contain processors with more sophisticated ALUs \cite{ss}. As such, Lisp machines which implemented designs similar to this would likely take the form of a multi-processor system.
 
