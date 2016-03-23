@@ -609,7 +609,9 @@ In solving the problem of evaluating the arguments of functions the Class M and 
 
 Two primary implementations of the environment are called \textit{deep binding} and \textit{shallow binding}, which serve as variations on a linked list of name-value pairs of functions and referencing contexts of variable associations. Deep binding makes use of a simple linked list of name-value pairs that is searched every time the function is called, and in the worst case the entire list must be traversed. Shallow binding uses a table that holds the name-value pairs. While this allows for faster function calling, the values in any variables that are overwritten have to be stored elsewhere while the function executes.
 
-While lists function quite well as a way of mathematically representing data, they can be computationally inefficient. Therefore, some Lisp machines have represented them in more compact forms, which the authors classify as \textit{vector-coded} and \textit{structure-coded}. Vector-coded representations assume that a list is linear, or that none of its elements are themselves lists. Making this the default case speeds up the evaluation of list elements, with elements that point to other objects treated as exceptions that will evaluate slower. Structure-coded representations attach tags to each list cell that identifies its place in the list. This information allows the list to be traversed quickly, and allows for fast access to individual cells. The implementations of each of these representations vary from machine to machine, as there are multiple implementations of each \cite{pt}. \underline{Add more detail if desired}
+While lists function quite well as a way of mathematically representing data, they can be computationally inefficient. Therefore, some Lisp machines have represented them in more compact forms, which the authors classify as \textit{vector-coded} and \textit{structure-coded}. Vector-coded representations assume that a list is linear, or that none of its elements are themselves lists. Making this the default case speeds up the evaluation of list elements, with elements that point to other objects treated as exceptions that will evaluate slower. Structure-coded representations attach tags to each list cell that identifies its place in the list. This information allows the list to be traversed quickly, and allows for fast access to individual cells. The implementations of each of these representations vary from machine to machine, as there are multiple implementations of each \cite{pt}.
+
+Additionally, tail recursion is a common programming technique and design pattern to follow that increases speed tremendously, and decrease memory usage. Using traditional recursion, typically calling the function recursive is preceded by calculations. Consequently, the final evaluation is dependent on the complete transaction of the recursive calls. However, when using tail recursion, the calculations are all completed prior to executing recursive calls. Tail recursion takes the evaluation of the current step before passing it into the next recursive step. It is more optimal due to the fact that the current memory allocation is then no longer required.
 
 Lisp delegates the management of the heap to the system rather than the programmer, which necessitates the need for an algorithmic method in which heap data can be allocated when needed and deallocated when it is no longer wanted. The limited amount of memory available to systems has made the reclamation of used space the most researched aspect of heap maintenance, which is commonly referred to as \textit{garbage collection}. Garbage collection is a two-stage process: the system must first identify memory locations that should be reclaimed, and then must simply identify them as such. Two common methods of garbage collection were present in most Lisp systems: \textit{reference counting} and \textit{marking}. Reference counting consists of keeping a list of the number of references for each object in the code and marking it as free space once that number goes to zero, but suffers from numerous drawbacks, such as the memory requirement of keeping such a list. Marking is more common in Lisp machines, and consists of marking each object with a one-bit field to indicate whether it should be removed. Once all available heap space has been allocated, any the memory cells containing objects marked for reclamation are overwritten.
 
@@ -620,18 +622,19 @@ The proposed processor would run a simplified version of Lisp, called Scheme, th
 
 To reduce evaluation times for atoms and lookup times for variables, the representation of list data is altered slightly so that each pointer contains a field that specifies how the data should be handled. This happens at compilation time, such that the code does not be modified to include these types, and the compiler will appropriately tag the data \cite{ss}. Refer to figure 1 for a graphical representation of this format generated from a small code sample.
 
+
 \begin{figure}[!t]
-\centering
-\includegraphics[width=3.5in]{SS_Data_Representation}
-\caption{Example of the tagged data representation used in the Steele an Sussman processor, intended to improve evaluation and lookup efficiency \cite{ss}.}
-\label{Data representation}
+	\centering
+	\includegraphics[width=3.5in]{SS_Data_Representation}
+	\caption{Example of the tagged data representation used in the Steele an Sussman processor, intended to improve evaluation and lookup efficiency \cite{ss}.}
+	\label{Data representation}
 \end{figure}
 
 \begin{figure}[!t]
-\centering
-\includegraphics[width=3.5in]{SS_Processor_Diagram}
-\caption{An overview diagram of the processor design proposed by Steele and Sussman. This design was fabricated to test the author's proposed system, but was likely never implemented commercially \cite{ss}.}
-\label{Data representation}
+	\centering
+	\includegraphics[width=3.5in]{SS_Processor_Diagram}
+	\caption{An overview diagram of the processor design proposed by Steele and Sussman. This design was fabricated to test the author's proposed system, but was likely never implemented commercially \cite{ss}.}
+	\label{Data representation}
 \end{figure}
 
 
@@ -640,6 +643,12 @@ In their paper, the authors propose that by combining these two ideas, an effici
 A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right \cite{ss}. A diagram representing the layout of their processor is displayed in figure 2.
 
 As noted by Steele and Sussman, their processor does not include a meaningful arithmetic logic unit (ALU), and so can not be independent in a system that needs to process real data. However, it contains basic structures for logic and can perform incrementation, and so contains the necessary components to run any Lisp program in the described style, due to the simple nature of their proposed Lisp dialect. It is suggested that any actual calculations be done with modules closer to the memory, which most likely contain processors with more sophisticated ALUs \cite{ss}. As such, Lisp machines which implemented designs similar to this would likely take the form of a multi-processor system.
+
+\section{Applications, Obsolescence, and Legacy}
+The most popular domain for Lisp machines was  artificial intelligence areas.  This is because the Lisp machines were vastly well developed and generated code that ran efficiently, and allowed programmers to create levels of abstraction that can be specific to a certain domain and create their own infrastructure within the language. Lisp allowed for dynamic creation of new objects, and one of the first machines to support dynamically-sized lists and have a garbage collector that is completely automatic. One of the Lisp machines' main selling points is that there was no need to recompile any of the functions while the program is running, but on-the-fly changes were possible using the language and machines.
+
+In the beginnings of the digital revolution and the dawn of personal computing, some desktop computers were able to run Lisp programs at the same speed or higher than Lisp machines at cheaper costs. Desktop machines, unlike Lisp machines, had no need for special purposes hardware. This caused most Lisp machine manufacturing companies to close, and businesses would cease to create Lisp machines or improve them.
+
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
