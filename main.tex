@@ -27,7 +27,7 @@
 		\\ \{dadabish, edbradley\}@oakland.edu
 		}
 \thanks{
-This paper was submitted for review on March 25, 2016. It was produced with help from Oakland University's subscription to publication sources with information on Lisp and Lisp machines.
+This paper was submitted for review on April 1, 2016. It was produced with help from Oakland University's subscription to publication sources with information on Lisp and Lisp machines.
 }%
 \thanks{
 D. Dabish and E. Bradley are Computer Science students at Oakland University in Rochester, MI, 			48309. 
@@ -53,7 +53,7 @@ The high-level capabilities that Lisp affords programmers make the language usef
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-Lisp, Lisp machine, computer engineering, vintage computing, computer organization.
+Lisp, Lisp machine, computer engineering, vintage computing, computer organization, computer architecture.
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -87,20 +87,20 @@ Numbers and some other basic expressions such as booleans qualify as \textit{sel
 
 Lisp was built to support complete abstraction of data. Data abstraction can isolate a compound data object and its usage from the fabrics of how primitive data objects are constructed. The reason that data abstraction is necessary is to provide foundation to a program in such a way that tasks can be performed without having information about the data beforehand. This is different from a concrete representation of data, which can be defined independently from the program which will handle said data.
 
-\texttt{car} and \texttt{cdr} are primitive operations that can be performed on lists and other data objects. They are used to both extract from lists and manipulate them.  The car operation extracts the first element from the list, and the cdr operation extracts the rest of the list. For example, consider a list with three elements: \\\\\texttt{'(d o m)}\\\\ The following expression involving the car and cdr operations on said list evaluate to the following: \\\\\texttt{(car  '(d o m))}\\\\ evaluates to \texttt{d}, and \\\\\texttt{(cdr '(d o m))}\\\\ evaluates to \texttt{'(o m)}.\\\\ These are classified as procedures operated on list objects. However, this is not the same case as pairs. When given the following pair: \\\\\texttt{(cons D d)}\\\\ and operating \texttt{car} and \texttt{cdr} on the pair, the evaluation will return to \texttt{D} and \texttt{d}, respectively.\cite{sicp}
+\texttt{car} and \texttt{cdr} are primitive operations that can be performed on lists and other data objects. They are used to both extract from lists and manipulate them.  The car operation extracts the first element from the list, and the cdr operation extracts the rest of the list. For example, consider a list with three elements: \\\\\texttt{'(d o m)}\\\\ The following expression involving the car and cdr operations on said list evaluate to the following: \\\\\texttt{(car  '(d o m))}\\\\ evaluates to \texttt{d}, and \\\\\texttt{(cdr '(d o m))}\\\\ evaluates to \texttt{'(o m)}.\\\\ These are classified as procedures operated on list objects. However, this is not the same case as pairs. When given the following pair: \\\\\texttt{(cons D d)}\\\\ and operating \texttt{car} and \texttt{cdr} on the pair, the evaluation will return to \texttt{D} and \texttt{d}, respectively \cite{sicp}.
 
-The IBM 704 was built with specific support for splitting the language's 36-bit machine words into four parts. The first and second parts of the word, both 15 bits each, were the \textit{address part} and the \textit{decrement part}, called \texttt{car} and \texttt{cdr}. The last two parts, \texttt{cpr} and \texttt{ctr} were deprecated. Lisp, being originally marketed as a \textit{list processing language}, named \texttt{car} and \texttt{cdr} for acronyms for \textit{Contents of the Address part of the Register number} and \textit{Contents of the Decrement part of the Register number}. Both of these functions take a machine address as the initial argument, then load the word from memory to extract the bits located.\cite{acm}
+The IBM 704 was built with specific support for splitting the language's 36-bit machine words into four parts. The first and second parts of the word, both 15 bits each, were the \textit{address part} and the \textit{decrement part}, called \texttt{car} and \texttt{cdr}. The last two parts, \texttt{cpr} and \texttt{ctr} were deprecated. Lisp, being originally marketed as a \textit{list processing language}, named \texttt{car} and \texttt{cdr} for acronyms for \textit{Contents of the Address part of the Register number} and \textit{Contents of the Decrement part of the Register number}. Both of these functions take a machine address as the initial argument, then load the word from memory to extract the bits located \cite{acm}.
 
 Pairs are useful when building a sequence in Lisp. A sequence is defined as an ordered collection of data objects. Sequences are one of the fundamental building blocks to perform recursive and other useful procedures. As shown in the Figure 1, the sequence d, o, m is represented as a chain of pairs.\\
 
 \texttt{(cons d (cons o (cons m nil)))}\\
 
-There are also procedures that can perform operations on lists. For example, the procedure \texttt{reverse} takes a list as an argument and returns a list with the same elements, but in reverse order. In this example, the s-value \texttt{(reverse '(d o m))} evaluates to \texttt{'(m o d)}.\cite{sicp}
+There are also procedures that can perform operations on lists. For example, the procedure \texttt{reverse} takes a list as an argument and returns a list with the same elements, but in reverse order. In this example, the s-value \texttt{(reverse '(d o m))} evaluates to \texttt{'(m o d)} \cite{sicp}.
 
 
 \subsection{Environments}
 Environments are a specific kind of datatype that allows one to define a set of variables that are bound to specific values. The actual datatype for the environment can be implemented in a variety of ways. Using a data-centric approach, we can introduce the environment datatype as follows:\\\\
-\texttt{Env :=}\\\texttt{(empty-env) | (extend-env var val Env)}\\\\Each datatype includes constructors and observers, which Lisp enables the programmer to define and construct. An environment is comparable with a dictionary, in the fact that, when using an extractor, the function must search for the variable (word) and, once found, will then be able to extract the value (definition). In Lisp, environments share some of the fundamental properties as the logic units in Lisp machines do.\cite{sicp}
+\texttt{Env :=}\\\texttt{(empty-env) | (extend-env var val Env)}\\\\Each datatype includes constructors and observers, which Lisp enables the programmer to define and construct. An environment is comparable with a dictionary, in the fact that, when using an extractor, the function must search for the variable (word) and, once found, will then be able to extract the value (definition). In Lisp, environments share some of the fundamental properties as the logic units in Lisp machines do \cite{sicp}.
 
 \begin{figure}[!t]
 	\centering
@@ -128,7 +128,7 @@ A way in which recursion is commonly used in Lisp that includes list-based manip
 					 (list-of-all? predicate (cdr lst)))))
 }\\\\The above code evaluates to \texttt{\#t} and terminates given an empty list, which is the base case. Otherwise, it will extract the first element of the list and check the predicate against it. If the check evaluates to \texttt{\#f}, then the function will evaluate completely to \texttt{\#f}, and not check the rest of the list. However, if \texttt{\#t}, the function will check the rest of the list, discluding the first element. This function will therefore terminate when an element that does not match the predicate is found, or when every element of the list has been checked on by the predicate.
 
-Tail recursion is a common programming technique and design pattern to follow that increases speed tremendously while decreasing memory usage. Using traditional recursion, calling the recursive function is typically preceded by calculations. Consequently, the final evaluation is dependent on the complete transaction of the recursive calls. However, when using tail recursion, the calculations are all completed prior to executing recursive calls. It takes the evaluation of the current step before passing it into the next recursive step, and is more optimal due to the fact that the current memory allocation is then no longer required.\cite{sicp}
+Tail recursion is a common programming technique and design pattern to follow that increases speed tremendously while decreasing memory usage. Using traditional recursion, calling the recursive function is typically preceded by calculations. Consequently, the final evaluation is dependent on the complete transaction of the recursive calls. However, when using tail recursion, the calculations are all completed prior to executing recursive calls. It takes the evaluation of the current step before passing it into the next recursive step, and is more optimal due to the fact that the current memory allocation is then no longer required \cite{sicp}.
 
 \section{Identifiable Problems in the Execution of Lisp Code}
 In a 1987 survey of Lisp machines, Andrew Pleszkun and Matthew Thazhuthaveetil concluded there were four main problems engineers needed to address when designing a Lisp machine: function calls, environment maintenance, efficient list representation, and heap performance. There were multiple solutions to these problems, and at the time of their survey, methods of improving these aspects in Lisp machines were seen as valuable topics for further research \cite{pt}.
