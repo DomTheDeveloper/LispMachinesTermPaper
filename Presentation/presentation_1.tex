@@ -155,59 +155,206 @@ Oakland University \\ % Your institution for the title page
 	\end{columns}
 \end{frame}
 
-\begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
-
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
-\end{frame}
-
-
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
-\end{frame}
 
 %------------------------------------------------
 \section{How Lisp works}
 %------------------------------------------------
 
+
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+	\frametitle{Functions in Lisp}
+	
+	
+	Consider a simple function \texttt{g}, which takes one argument \texttt{x}.
+	
+	
+	\begin{example}[Function in mathematics]
+		\begin{verbatim}
+		g(x)
+		\end{verbatim}
+	\end{example}
+	
+	
+	In Lisp, this is written in the following manner:
+	
+	\begin{example}[Function in Lisp]
+		\begin{verbatim}
+		(g x)
+		\end{verbatim}
+	\end{example}
+	
+\end{frame}
+
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+	\frametitle{Lists}
+	
+	
+	\begin{columns}[c] 
+		\column{.6\textwidth} % Left column and width
+	Consider a simple array of characters in Java:
+	
+	\begin{example}[Array in Java]
+		\begin{verbatim}
+		char[] myArray = ['d', 'o', 'm'];
+		\end{verbatim}
+	\end{example}
+	
+	
+	In Lisp, we can write the elements as symbols, and our data structure is a \texttt{list}.
+	
+	\begin{example}[List in Lisp]
+		\begin{verbatim}
+		'(d o m)
+		\end{verbatim}
+	\end{example}
+	
+	\column{.5\textwidth} % Left column and width
+	\begin{figure}
+		\includegraphics[width=1.2\linewidth]{../img/chain}
+		 
+	\end{figure}
+	
+	
+	\end{columns}
+	
+\end{frame}
+
+\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+	\frametitle{List-manipulating functions}
+	
+	\texttt{car} and \texttt{cdr} are primitive operations for lists.
+	
+	\begin{itemize}
+		\item \texttt{car} extracts the first element from the list
+		\item \texttt{cdr} extracts the rest of the list
+	\end{itemize}
+	
+	
+	\begin{example}[car]
+		\begin{verbatim}
+		(car '(d o m)) => 'd
+		\end{verbatim}
+	\end{example}
+	
+	\begin{example}[cdr]
+		\begin{verbatim}
+		(cdr '(d o m)) => '(o m)
+		\end{verbatim}
+	\end{example}
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Defining a recursive function}
+		Let us define a factorial function in Lisp using recursion:
+		\begin{example}[Factorial function in Lisp]
+			\begin{verbatim}
+			(defun factorial(n)
+				(if (= n 0)
+					1
+					(* n (factorial (- n 1))
+				)
+			)
+			\end{verbatim}
+		\end{example}
+		
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Evaluating a recursive function}
+	\begin{table}
+		Consider the following function call:
+		\begin{example}[Factorial function call in Lisp]
+			\begin{verbatim}
+			(factorial 5)
+			\end{verbatim}
+		\end{example}
+		
+		Here is its evaluation path:
+		\begin{tabular}{l l l l}
+			\toprule
+			\textbf{Function call} & \textbf{Evaluation 1} & \textbf{Eval 2} & \textbf{Eval 3}\\
+			\midrule
+			\texttt{(factorial 5)} &\texttt{(* 5 (factorial 4))} & \texttt{(* 5 24) } & \texttt{120} \\
+			\texttt{(factorial 4)} &\texttt{(* 4 (factorial 3))} & \texttt{(* 4 6)  } & \texttt{24} \\
+			\texttt{(factorial 3)} &\texttt{(* 3 (factorial 2))} & \texttt{(* 3 2)  } & \texttt{6} \\
+			\texttt{(factorial 2)} &\texttt{(* 2 (factorial 1))} & \texttt{(* 2 1)  } & \texttt{2} \\
+			\texttt{(factorial 1)} &\texttt{(* 1 (factorial 0))} & \texttt{(* 1 1)  } & \texttt{1} \\
+			\bottomrule
+		\end{tabular}
+		\caption{Complete recursive evaluation}
+	\end{table}
+\end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{Recursive evaluation example explained}
+
+	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		
+		\column{.4\textwidth} % Left column and width
+		The program checks if the argument \texttt{n} is equal to 0 (the base case). If so, the function evaluates to 1 and terminates; otherwise, the function will multiply the argument by the factorial with \texttt{n-1} as the argument instead. This creates a chain, and evaluates to the factorial of \texttt{n}.
+		
+		\column{.5\textwidth}
+		\begin{figure}
+			\includegraphics[width=1\linewidth]{../img/factorial}
+		\end{figure}
+
+	\end{columns}
+
+\end{frame}
+
+
 %------------------------------------------------
 \section{Problems in Execution}
 %------------------------------------------------
+
+
+\begin{frame}
+	\frametitle{Paragraphs of Text}
+	Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
+	
+	Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
+\end{frame}
+
+
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Blocks of Highlighted Text}
+	\begin{block}{Block 1}
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+	\end{block}
+	
+	\begin{block}{Block 2}
+		Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
+	\end{block}
+	
+	\begin{block}{Block 3}
+		Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+	\end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Multiple Columns}
+	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+		
+		\column{.45\textwidth} % Left column and width
+		\textbf{Heading}
+		\begin{enumerate}
+			\item Statement
+			\item Explanation
+			\item Example
+		\end{enumerate}
+		
+		\column{.5\textwidth} % Right column and width
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+		
+	\end{columns}
+\end{frame}
 
 %------------------------------------------------
 \section{Example processor}
@@ -217,21 +364,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ul
 \section{Legacy of Lisp machines}
 %------------------------------------------------
 
-\begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-\end{frame}
+
 
 %------------------------------------------------
 
@@ -243,19 +376,6 @@ $E = mc^2$
 \end{frame}
 
 %------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
-\end{frame}
 
 %------------------------------------------------
 
