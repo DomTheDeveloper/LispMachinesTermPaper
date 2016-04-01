@@ -167,16 +167,16 @@ To reduce evaluation times for atoms and lookup times for variables, the represe
 	\label{Data representation}
 \end{figure}
 
+In their paper, the authors propose that, by combining these two ideas, an efficient interpreter can be designed directly into the hardware. The hardware itself is only concerned with the traversing of the Lisp structure, and so all data is accessed through pointers to memory, which are stored in the processor's registers. Commercially-available memory was only available in a form that stored linearly-indexed vectors rather than linked-lists at the time, so a storage manager was needed to interface between the memory hardware and the processor to ensure the processor could properly utilize the memory. The registers in the proposed processor would hold an 8-bit address and 3-bit type value for each pointer \cite{ss}.
+
+A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right \cite{ss}. A diagram representing the layout of their processor is displayed in Figure 4.
+
 \begin{figure}[!t]
 	\centering
 	\includegraphics[width=3.5in]{SS_Processor_Diagram}
 	\caption{An overview diagram of the processor design proposed by Steele and Sussman. This design was fabricated to test the author's proposed system, but was likely never implemented commercially \cite{ss}.}
 	\label{Data representation}
 \end{figure}
-
-In their paper, the authors propose that, by combining these two ideas, an efficient interpreter can be designed directly into the hardware. The hardware itself is only concerned with the traversing of the Lisp structure, and so all data is accessed through pointers to memory, which are stored in the processor's registers. Commercially-available memory was only available in a form that stored linearly-indexed vectors rather than linked-lists at the time, so a storage manager was needed to interface between the memory hardware and the processor to ensure the processor could properly utilize the memory. The registers in the proposed processor would hold an 8-bit address and 3-bit type value for each pointer \cite{ss}.
-
-A physical layout was given for this processor, wherein the evaluator and storage manager exist in the form of microcode implemented on read-only memory with a register above each functioning as a form of program counter. Above these are the registers for each unit connected by a bus to transfer information between them. The input connections are supplied on the left and output connections supplied on the right \cite{ss}. A diagram representing the layout of their processor is displayed in Figure 4.
 
 As noted by Steele and Sussman, their processor does not include a meaningful arithmetic logic unit (ALU), and so can not be independent in a system that needs to process real data. However, it contains basic structures for logic and can perform incrementation, and contains the necessary components to run any Lisp program in the described style, due to the simple nature of their proposed Lisp dialect. It is suggested that any actual calculations be done with modules closer to the memory, which most likely contain processors with more sophisticated ALUs \cite{ss}. As such, Lisp machines which implemented designs similar to this would likely take the form of a multi-processor system. An example of such a machine is detailed in a paper by Klaassen and Wezenbeek that uses a three-processor design to efficiently run Common Lisp programs \cite{kw}.
 
