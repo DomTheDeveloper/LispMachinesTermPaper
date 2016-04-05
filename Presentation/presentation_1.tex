@@ -73,7 +73,17 @@
 %\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
 %\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
 
-%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+
+\definecolor{OUGold}{RGB}{181,154,57}
+\setbeamercolor{structure}{fg=OUGold}
+
+% position the logo
+%\addtobeamertemplate{frametitle}{}{%
+%\begin{textblock*}{100mm}(\textwidth,-1cm)
+%\includegraphics[height=1cm,width=1cm,keepaspectratio]{logopolito}
+%\end{textblock*}}
+
 }
 
 \usepackage{graphicx} % Allows including images
@@ -320,6 +330,39 @@ Oakland University \\ % Your institution for the title page
 \section{Problems in Execution}
 %------------------------------------------------
 
+\begin{frame}
+	\frametitle{Problems in execution}
+	Lisp doesn't run very efficiently on general-purpose hardware. Problems include:
+	\newline
+	\begin{itemize}
+		\item Evaluating functions
+		\newline
+		\item List representation
+		\newline
+		\item Environment management
+		\newline
+		\item Heap management
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Evaluating functions}
+\end{frame}
+
+\begin{frame}
+	\frametitle{List representation}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Environment management}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Heap management}
+\end{frame}
+
+
 %------------------------------------------------
 \section{Example processor}
 %------------------------------------------------
@@ -360,7 +403,7 @@ Oakland University \\ % Your institution for the title page
 			
 			\column{.75\textwidth} 
 	
-	\textit{Structure \& Interpretation of Computer Programs} is a classic programming textbox,  and uses a Lisp variant to teach programming in universities nationwide, including Oakland University.\newline
+	\textit{Structure \& Interpretation of Computer Programs} is a classic programming textbook,  and uses a Lisp variant to teach programming in universities nationwide, including Oakland University.\newline
 	
 
 			
