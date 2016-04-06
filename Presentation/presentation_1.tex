@@ -337,9 +337,9 @@ Oakland University \\ % Your institution for the title page
 	\begin{itemize}
 		\item Evaluating functions
 		\newline
-		\item List representation
-		\newline
 		\item Environment management
+		\newline
+		\item List representation
 		\newline
 		\item Heap management
 	\end{itemize}
@@ -348,24 +348,144 @@ Oakland University \\ % Your institution for the title page
 
 \begin{frame}
 	\frametitle{Evaluating functions}
-\end{frame}
-
-\begin{frame}
-	\frametitle{List representation}
+	Lisp has a lot of function calls, and accessing variables is challenging.
+	\newline
+	\begin{itemize}
+		\item They can be either atoms or other lists.
+		\newline
+		\item There are an unknown number of arguments.
+		\newline
+		\item Functions can be passed as arguments.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Environment management}
+	The environment consists of the current value inside every variable.
+	\newline
+	\begin{itemize}
+		\item Changes on every function call.
+		\newline
+		\item There can often be many environments.
+		\newline
+		\item Previous environments may need to be accessed: called the \textit{funarg} problem.
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{List representation}
+	Everything in Lisp is a list, even the program itself.
+	\newline
+	\begin{itemize}
+		\item Often represented as linked-lists.
+		\newline
+		\item Slow to traverse by general-purpose hardware.
+		\newline
+		\item Variables are untyped, have to be checked before use.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Heap management}
+	Lisp uses a heap to store all variables.
+	\newline
+	\begin{itemize}
+		\item The heap is managed by Lisp, not the programmer.
+		\newline
+		\item The heap manager needs to ensure computer memory isn't exhausted.
+		\newline
+		\item The hardest part is garbage collection, or reclamation of unused data.
+	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Solutions in Lisp machines}
+	Lisp machines were built with solutions to these problems. Came in three categories:
+	\newline
+	\begin{itemize}
+		\item \emph{Class-M} machines: Standard computers with special microcode.
+		\newline
+		\item \emph{Class-S} machines: Computers with multiple processors that were specialized for certain tasks.
+		\newline
+		\item \emph{Class-P} machines: Built with multiple processors that were identical and would run code concurrently.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Function evaluation}
+	Function evaluation was largely solved by tagging variable types.
+	\newline
+	\begin{itemize}
+		\item All three classes allowed for code to be compiled so that the types of arguments were tagged.
+		\newline
+		\item Specific cases were made for up to six arguments.
+		\newline
+		\item Class-P machines would evaluate arguments concurrently.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Managing the environment}
+	\emph{Deep binding}
+	\begin{itemize}
+		\item Linked list of name-value pairs
+		\item Searched for every access.
+		\item Has to search whole list in worst-case. \newline
+	\end{itemize}
+	\emph{Shallow binding}
+	\begin{itemize}
+		\item Table of name-value pairs.
+		\item Faster function calling.
+		\item Holds less variables; old values overwritten.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Representing linked lists}
+	Many solutions.
+	\newline
+	\begin{itemize}
+		\item \emph{Vector-coded}: Assumes the list contains no lists, which saves on evaluation time.
+		\item \emph{Structure-coded}: Attaches numbers to each element that allow it to be accessed like an array.
+		\item \emph{Tree-coded}: The list is encoded in a binary tree.
+		\item Numerous other solutions.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Managing the heap}
+	Garbage collection was the primary concern in heap management design. Two primary solutions:
+	\newline
+	\begin{itemize}
+		\item \emph{Reference counting}: The number of references for each variable are stored.
+		\newline
+		\item \emph{Marking}: More common; marks data that is fit for reclamation.
+	\end{itemize}
+\end{frame}
 
 %------------------------------------------------
 \section{Example processor}
 %------------------------------------------------
+
+\begin{frame}
+	\frametitle{Example processor}
+	\begin{columns}[c] 
+		\column{.4\textwidth} % Left column and width
+			\begin{itemize}
+				\item Runs Scheme, a simplified version of Lisp (used in SICP).
+				\newline
+				\item Interpreter designed in the hardware with microcode.
+				\newline
+				\item No ALU: the processor only deals with lists.
+			\end{itemize}
+		\column{.55\textwidth}
+			\begin{figure}
+				\includegraphics[width=1\linewidth]{../img/processor}
+			\end{figure}
+	\end{columns}
+\end{frame}
+			
 
 %------------------------------------------------
 \section{Legacy of Lisp machines}
