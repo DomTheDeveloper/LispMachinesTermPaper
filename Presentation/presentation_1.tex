@@ -77,15 +77,18 @@
 
 \definecolor{OUGold}{RGB}{181,154,57}
 \setbeamercolor{structure}{fg=OUGold}
+\setbeamercolor{block title example}{bg=OUGold}
+\setbeamercolor{section in toc}{fg=black}
 
 % position the logo
-%\addtobeamertemplate{frametitle}{}{%
-%\begin{textblock*}{100mm}(\textwidth,-1cm)
-%\includegraphics[height=1cm,width=1cm,keepaspectratio]{logopolito}
-%\end{textblock*}}
-
+\addtobeamertemplate{frametitle}{}{%
+	\begin{textblock*}{\paperwidth}(290pt,-38pt)
+		\includegraphics[height=1cm,keepaspectratio]{sail}
+	\end{textblock*}}
 }
 
+
+\usepackage{textpos} % package for the positioning
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 
@@ -107,7 +110,8 @@ Oakland University \\ % Your institution for the title page
 \begin{document}
 
 \begin{frame}
-\titlepage % Print the title page as the first slide
+	\frametitle{\space}
+	\titlepage % Print the title page as the first slide
 \end{frame}
 
 \begin{frame}
@@ -438,6 +442,7 @@ Oakland University \\ % Your institution for the title page
 
 
 \begin{frame}
+	\frametitle{\space}
 	\Huge{\centerline{Thank you!}}
 	\Huge{\centerline{ }}
 	\Huge{\centerline{Questions?}}
